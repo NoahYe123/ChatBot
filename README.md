@@ -14,6 +14,8 @@ Bot features currently implemented:
 
 -Image reply via user input
 
+-Date command which shows time and date whenever user asks for it 
+
 -Encouragement words reply via user input
 
 -Swear word censor
