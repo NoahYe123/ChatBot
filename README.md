@@ -1,5 +1,5 @@
 # ChatBot
-Multipurpose bot for Discord that brings positivity and joy during this time of loneliness and isolation
+Multipurpose bot for Discord that brings positivity and joy during this time of loneliness and isolation.
 Used discord.js (Node.js) which allows easy interaction with the Discord API.
 
 
