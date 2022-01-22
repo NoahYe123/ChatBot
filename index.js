@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const client = new Discord.Client()
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
 //adding comement
 //danny comments
 client.on("ready", () => {
@@ -12,4 +12,4 @@ client.on("message", msg => {
   }
 })
 
-client.login(process.env.TOKEN)
+client.login("OTM0MjkyODI0MzMyMDc1MDg4.Yet9_w.-tIhTkimADEwQLS6JIbLKyELnak");
