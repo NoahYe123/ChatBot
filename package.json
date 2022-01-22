@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/NoahYe123/ChatBot#readme",
   "dependencies": {
+    "discord-speech-recognition": "^2.2.0",
     "discord.js": "^13.6.0"
   }
 }
