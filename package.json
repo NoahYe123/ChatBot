@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/NoahYe123/ChatBot/issues"
   },
-  "homepage": "https://github.com/NoahYe123/ChatBot#readme"
+  "homepage": "https://github.com/NoahYe123/ChatBot#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  }
 }
