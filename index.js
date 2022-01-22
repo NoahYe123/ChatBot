@@ -3,30 +3,41 @@ const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
 
 const fetch = require("node-fetch")
 
-const sad =["sad", "depressed", "unhappy", "angry", "miserable"]
+
+//Array of negative words to be encouraged
+const sad =["sad", "depressed", "unhappy", "angry", "miserable","anxious","nervous", "broken","bad", "cry"]
+
+
+//Array of swear words to be censored
+const swear = ["arse", "ass", "asshole", "bastard", "bitch", "bollocks","brotherfucker","bugger","bullshit","child-fucker","cocksucker","crap","cunt","damn","effing","fatherfucker","frigger","fuck","goddam","godsdamn","hell","holy shit","horseshit","Jesus fuck","Jesus Christ","motherfucker","nigga","nigger","prick","shit","shit ass","sisterfucker","slut","son of a bitch","son of a whore","twat"]
+
+
+encouragements = ["Cheer up!:slight_smile:","Hang in there:slight_smile:", "Come on! You can do it!:slight_smile:", "Keep fighting!:slight_smile:", "Don't give up:slight_smile:", "That's rough buddy:slight_smile:"]
 
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
 })
 
-//swear, inappropriate words to delete
+//emojis
 client.on("message", msg => {
 
 
   if(msg.content.includes("test")) {
-    msg.reply("ya");
+    msg.reply("ya :slight_smile:");
   }
 
   if(msg.content.includes("daddy")) {
-    msg.reply("bruh ;)");
+    msg.reply("bruh :winking_face:");
   }
 
-  if(msg.content.includes("fuck")) {
-    msg.clear();
-    msg.reply("No swear words allowed, sorry bruv!");
-  }
+  //swear words censored
 
+  if (swear.some(word => msg.content.includes(word))){
+    
+    msg.delete();
+    msg.channel.send("##CENSORED##");
+  }
 
 
 
@@ -37,6 +48,8 @@ client.on("message", msg => {
 })
 
 
+//quotes used in tutorial
+//words of encouragement 
 
 function getQuote() {
   return fetch("https://zenquotes.io/api/random")
@@ -48,10 +61,6 @@ function getQuote() {
     })
 }
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`)
-})
-
 client.on("message", msg => {
   if (msg.author.bot) return
     
@@ -59,7 +68,15 @@ client.on("message", msg => {
     getQuote().then(quote => msg.channel.send(quote))
   }
 
-  
+  if (sad.some(word => msg.content.includes(word))){
+    const encouragement = encouragements[Math.floor(Math.random()*encouragements.length)]
+    msg.reply(encouragement)
+
+  }
+
+
+
+
 
 
 
