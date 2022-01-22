@@ -45,18 +45,18 @@ client.on("speech", (msg) => {
   var newCmd = msg.content
 
   // Greeting
-  if (newCmd === "hello bot") {
+  if (newCmd === "hello") {
     let newGreeting = createAudioResource(__dirname + '\\audio_files' + '\\ohayo_noahahahaha.mp3');
     player.play(newGreeting)
   }
   // Choose a random sound from array and play it
-  if (newCmd === "play a random sound" || newCmd === "random sound") {
+  if (newCmd === "sound") {
     let newSound = createAudioResource(__dirname + '\\audio_files' + sounds[Math.floor(Math.random() * sounds.length)]); // create an audio resource
     player.play(newSound) // use audio player to play it
   }
 
   // Leave voice channel
-  if (newCmd === "leave channel" || newCmd === "goodbye") {
+  if (newCmd === "goodbye") {
     getVoiceConnection(voiceId).disconnect()
   }
 
