@@ -5,6 +5,7 @@ Used discord.js (Node.js) which allows easy interaction with the Discord API.
 
 
 Bot features currently implemented:
+
 -Speech to text recognitation 
 
 -Production of sound type MP3
