@@ -8,6 +8,8 @@ Bot features currently implemented:
 
 -Speech to text recognitation 
 
+-Voice Command
+
 -Production of sound type MP3
 
 -Text spam via user input
