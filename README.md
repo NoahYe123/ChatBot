@@ -1,2 +1,2 @@
 # ChatBot
-Bot for lonely people, ur mum gay AHAHA
+Multipurpose bot for discord.
