@@ -27,7 +27,7 @@ Bot features currently implemented:
 
 -Motivational Quotes Command
 
--Meme Generator (from subreddits like wholesome memes and dankmemes.
+-Meme Generator (from subreddits like wholesome memes and dankmemes)
 
 -Daily good mornings and good nights
 
