@@ -1,5 +1,5 @@
 # ChatBot
-Multipurpose bot for Discord that brings positivity and joy during this time of loneliness and isolation.
+Multipurpose bot for Discord that brings positivity and joy during this time of loneliness and isolation! #iHateCorona
 
 Used discord.js (Node.js) which allows easy interaction with the Discord API.
 
@@ -39,8 +39,8 @@ In progress
 
 -Mini games to play via the bot!
 
+-Machine Learning!
 
 
-
-Made for Hackathon 2022.
+Made for Hackathon 2022 Winter Semester McGill.
 
