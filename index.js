@@ -1,11 +1,11 @@
 const Discord = require("discord.js")
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"/*, "GUILD_MEMBERS"*/] })
 
 const fetch = require("node-fetch")
 
 
 //Array of negative words to be encouraged
-const sad =["sad", "depressed", "unhappy", "angry", "miserable","anxious","nervous", "broken","bad", "cry"]
+const sad =["sad", "depressed", "unhappy", "angry", "miserable","anxious","nervous", "broken","bad", "cry","tired"]
 
 
 //Array of swear words to be censored
@@ -15,9 +15,17 @@ const swear = ["arse", "ass", "asshole", "bastard", "bitch", "bollocks","brother
 encouragements = ["Cheer up!:slight_smile:","Hang in there:slight_smile:", "Come on! You can do it!:slight_smile:", "Keep fighting!:slight_smile:", "Don't give up:slight_smile:", "That's rough buddy:slight_smile:"]
 
 
-client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`)
-})
+
+
+client.on("guildCreate", guild => {
+  guild.owner.send("Hello. Welcome!")
+});
+
+
+
+
+
+
 
 //emojis
 client.on("message", msg => {
@@ -28,7 +36,7 @@ client.on("message", msg => {
   }
 
   if(msg.content.includes("daddy")) {
-    msg.reply("bruh :winking_face:");
+    msg.reply("bruh");
   }
 
   //swear words censored
@@ -39,18 +47,9 @@ client.on("message", msg => {
     msg.channel.send("##CENSORED##");
   }
 
-
-
-
-
-
-
 })
-
-
 //quotes used in tutorial
 //words of encouragement 
-
 function getQuote() {
   return fetch("https://zenquotes.io/api/random")
     .then(res => {
@@ -73,15 +72,6 @@ client.on("message", msg => {
     msg.reply(encouragement)
 
   }
-
-
-
-
-
-
-
-
-
 
 
 })
