@@ -39,7 +39,7 @@ In progress
 
 -Mini games to play via the bot!
 
--Machine Learning!
+-Machine Learning to make conversion with the bot!
 
 
 Made for Hackathon 2022 Winter Semester McGill.
