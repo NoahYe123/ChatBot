@@ -18,9 +18,9 @@ var morining = cron.schedule(" 0 8 * * *", () => {
   timezone: "EST"
 });
 
-var morining = cron.schedule(" 0 21 * * *", () => {
+var morining = cron.schedule(" 15 0 * * *", () => {
   channel = client.channels.cache.get("934293745187315715");
-  channel.send("Go to sleep! It's getting late");
+  channel.send("Go to sleep! It's getting late!");
 }, {
   scheduled: true,
   timezone: "EST"
