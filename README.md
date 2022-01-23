@@ -24,7 +24,7 @@ Bot features currently implemented:
 
 -Motivational Quotes Command
 
-
+-Meme Generator
 
 
 Made for Hackathon 2022.
