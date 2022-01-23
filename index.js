@@ -42,7 +42,7 @@ client.on('messageCreate', message => {
   }
 })
 
-//sends a request to the wholesomememes reddit server to output a wholesome meme on the discord server
+//sends a request to the wholesomememes reddit server to output a random wholesome meme on the discord server
 
 client.on('messageCreate', message => {
   if (message.content === "!wholesome") {
@@ -67,7 +67,7 @@ client.on('messageCreate', message => {
   }
 })
 
-//sends a request to the me_irl reddit server to output a wholesome meme on the discord server
+//sends a request to the me_irl reddit server to output a random me_irl meme on the discord server
 
 client.on('messageCreate', message => {
   if (message.content === "!me_irl") {
@@ -92,7 +92,7 @@ client.on('messageCreate', message => {
   }
 })
 
-//sends a request to the gifs reddit server to output a wholesome meme on the discord server
+//sends a request to the gifs reddit server to output a random gif on the discord server
 
 client.on('messageCreate', message => {
   if (message.content === "!gifs") {
@@ -117,7 +117,7 @@ client.on('messageCreate', message => {
   }
 })
 
-//sends a request to the itookapicture reddit server to output a wholesome meme on the discord server
+//sends a request to the itookapicture reddit server to output a random cool picture on the discord server
 
 client.on('messageCreate', message => {
   if (message.content === "!coolpics") {
