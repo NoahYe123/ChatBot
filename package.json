@@ -17,11 +17,18 @@
   },
   "homepage": "https://github.com/NoahYe123/ChatBot#readme",
   "dependencies": {
+    "@discordjs/opus": "github:discordjs/opus",
+    "@discordjs/voice": "^0.7.5",
+    "cron": "^1.8.2",
     "discord-speech-recognition": "^2.2.0",
     "discord-tts": "^1.2.1",
     "discord.js": "^13.6.0",
+    "ffmpeg-static": "^4.4.1",
     "got": "^12.0.1",
-    "node-fetch": "^3.2.0"
+    "node-cron": "^3.0.0",
+    "node-fetch": "^3.2.0",
+    "node-pre-gyp": "^0.17.0",
+    "tweetnacl": "^1.0.3"
   },
   "type": "commonjs"
 }
