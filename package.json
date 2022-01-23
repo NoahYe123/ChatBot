@@ -1,7 +1,7 @@
 {
   "name": "chatbot",
   "version": "1.0.0",
-  "description": "Bot for lonely people, ur mum gay AHAHA",
+  "description": "cool bot for discord server",
   "main": "index.js",
   "scripts": {
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\""
@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/NoahYe123/ChatBot#readme",
   "dependencies": {
-    "discord.js": "^13.6.0"
-  }
+    "discord.js": "^13.6.0",
+    "got": "^12.0.1",
+    "node-fetch": "^3.2.0"
+  },
+  "type": "module"
 }
