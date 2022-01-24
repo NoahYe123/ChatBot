@@ -1,5 +1,5 @@
 const Discord = require("discord.js")
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"/*, "GUILD_MEMBERS"*/] })
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] })
 
 const fetch = require("node-fetch")
 
@@ -48,8 +48,8 @@ client.on("message", msg => {
   }
 
 })
-//quotes used in tutorial
-//words of encouragement 
+
+//words of encouragement function
 function getQuote() {
   return fetch("https://zenquotes.io/api/random")
     .then(res => {
