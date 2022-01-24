@@ -1,15 +1,34 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const Discord = require("discord.js") // import discord.js dependency
 const { getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource, StreamType } = require('@discordjs/voice') // import voice channel dependency
 const { addSpeechEvent } = require('discord-speech-recognition') // import speech recognition dependency
 const discordTTS = require("discord-tts") // discord text to speech
-
+import fetch from 'node-fetch'
 const currentDate = new Date()
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"] })
+//Array of negative words to be encouraged
+const sad = ["sad", "depressed", "unhappy", "angry", "miserable", "anxious", "nervous", "broken", "bad", "cry", "tired"]
 
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"] }) // create a new discord server/bot client
-//adding comement
-//danny comments
 
-// Print message when bot is ready
+//Array of swear words to be censored
+const swear = ["arse", "ass", "asshole", "bastard", "bitch", "bollocks", "brotherfucker", "bugger", "bullshit", "child-fucker", "cocksucker", "crap", "cunt", "damn", "effing", "fatherfucker", "frigger", "fuck", "goddam", "godsdamn", "hell", "holy shit", "horseshit", "Jesus fuck", "Jesus Christ", "motherfucker", "nigga", "nigger", "prick", "shit", "shit ass", "sisterfucker", "slut", "son of a bitch", "son of a whore", "twat"]
+
+
+const encouragements = ["Cheer up!:slight_smile:", "Hang in there:slight_smile:", "Come on! You can do it!:slight_smile:", "Keep fighting!:slight_smile:", "Don't give up:slight_smile:", "That's rough buddy:slight_smile:"]
+
+
+
+
+client.on("guildCreate", guild => {
+  guild.owner.send("Hello. Welcome!")
+});
+
 client.on("ready", () => {
 
 
@@ -17,7 +36,9 @@ client.on("ready", () => {
 });
 
 // gives a sweer good morening text @ 8am
+
 const cron = require('node-cron');
+
 var morining = cron.schedule(" 0 8 * * *", () => {
   channel = client.channels.cache.get("934293745187315715");
   channel.send("Good Morning! Hope You Have A Great Day");
@@ -26,7 +47,7 @@ var morining = cron.schedule(" 0 8 * * *", () => {
   timezone: "EST"
 });
 // Gives you a sweet goodnight text @ 8 am
-var morining = cron.schedule(" 00 21 * * *", () => {
+var morining = cron.schedule(" * * * * * *", () => {
   channel = client.channels.cache.get("934293745187315715");
   channel.send("Go to sleep! It's Getting Late!");
 }, {
@@ -39,12 +60,11 @@ var task = cron.schedule("* * * * * *", () => {
   channel = client.channels.cache.get("934293745187315715");
   channel.send("spam");
 }, {
-  scheduled: false,
+  scheduled: true,
   timezone: "EST"
 });
 
 
-  
 const player = createAudioPlayer(); // create audio player for new options
 addSpeechEvent(client); // set up speech recognition
 
@@ -67,11 +87,54 @@ var jokes = ["I'm afraid for the calendar. Its days are numbered.",
 // variable for voice id of bot
 var voiceId = undefined;
 var chanId = undefined
+//emojis
+client.on("message", msg => {
 
-// Message commands
-client.on("messageCreate", async msg => {
+
+  if (msg.content.includes("test")) {
+    msg.reply("ya :slight_smile:");
+  }
+
+  if (msg.content.includes("daddy")) {
+    msg.reply("bruh");
+  }
+
+  //swear words censored
+
+  if (swear.some(word => msg.content.includes(word))) {
+
+    msg.delete();
+    msg.channel.send("##CENSORED##");
+  }
+
+})
+
+//words of encouragement function
+function getQuote() {
+  return fetch("https://zenquotes.io/api/random")
+    .then(res => {
+      return res.json()
+    })
+    .then(data => {
+      return data[0]["q"] + " -" + data[0]["a"]
+    })
+}
+
+client.on("message", async msg => {
+  
+  if (msg.author.bot) return
+
+  if (msg.content === "$inspire") {
+    getQuote().then(quote => msg.channel.send(quote))
+  }
+
+  if (sad.some(word => msg.content.includes(word))) {
+    const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)]
+    msg.reply(encouragement)
+  }
 
   if (msg.content.startsWith('!react')) {
+    
 
     msg.channel.send('How You Feeling?').then((question) => {
       question.react('😀');
@@ -82,11 +145,13 @@ client.on("messageCreate", async msg => {
       question.react('😈');
     });
   }
-// start spam
+  // start spam
   if (msg.content == "!spam") {
+
+    console.log("going here")
     task.start();
   }
-// stop the spam
+  // stop the spam
   if (msg.content == "!stop") {
     task.stop();
   }
@@ -109,19 +174,21 @@ client.on("messageCreate", async msg => {
     let newGreeting = createAudioResource(__dirname + '\\audio_files' + '\\ohayo_noahahahaha.mp3');
     player.play(newGreeting)
 
+    console.log(__dirname)
+
     console.log("passed here")
   }
 
   if (msg.content === "!hi") {
     msg.reply("How are you?");
   }
-// Tells current date
+  // Tells current date
   if (msg.content === "!date") {
     msg.reply(currentDate.toLocaleString());
+
   }
-
-
 })
+
 
 // Speech commands
 client.on("speech", (msg) => {
@@ -155,6 +222,8 @@ client.on("speech", (msg) => {
   //   msg.author.send(newCmd);
   // }
 });
+
+
 
 
 client.login("OTM0MjkyODI0MzMyMDc1MDg4.Yet9_w.-tIhTkimADEwQLS6JIbLKyELnak");
