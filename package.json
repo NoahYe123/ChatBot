@@ -28,7 +28,8 @@
     "node-cron": "^3.0.0",
     "node-fetch": "^3.2.0",
     "node-pre-gyp": "^0.17.0",
+    "opusscript": "^0.0.8",
     "tweetnacl": "^1.0.3"
   },
-  "type": "commonjs"
+  "type": "module"
 }
