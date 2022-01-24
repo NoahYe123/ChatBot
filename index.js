@@ -42,7 +42,7 @@ client.on("ready", () => {
 const cron = require('node-cron');
 
 var morining = cron.schedule(" 0 8 * * *", () => {
-  channel = client.channels.cache.get("934293745187315715");
+  let channel = client.channels.cache.get("934293745187315715");
   channel.send("Good Morning! Hope You Have A Great Day");
 }, {
   scheduled: true,
@@ -50,7 +50,7 @@ var morining = cron.schedule(" 0 8 * * *", () => {
 });
 // Gives you a sweet goodnight text @ 8 am
 var morining = cron.schedule(" * * * * * *", () => {
-  channel = client.channels.cache.get("934293745187315715");
+  let channel = client.channels.cache.get("934293745187315715");
   channel.send("Go to sleep! It's Getting Late!");
 }, {
   scheduled: true,
@@ -59,7 +59,7 @@ var morining = cron.schedule(" * * * * * *", () => {
 
 // for spamming function
 var task = cron.schedule("* * * * * *", () => {
-  channel = client.channels.cache.get("934293745187315715");
+  let channel = client.channels.cache.get("934293745187315715");
   channel.send("spam");
 }, {
   scheduled: true,
