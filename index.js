@@ -1,42 +1,44 @@
+// Import statements
 import { createRequire } from "module";
-const require = createRequire(import.meta.url);
 import path from 'path';
 import { fileURLToPath } from 'url';
+import got from 'got'
+import fetch from 'node-fetch'
+
+const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Discord variables
 const Discord = require("discord.js") // import discord.js dependency
 const { getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource, StreamType } = require('@discordjs/voice') // import voice channel dependency
 const { addSpeechEvent } = require('discord-speech-recognition') // import speech recognition dependency
 const discordTTS = require("discord-tts") // discord text to speech
-import fetch from 'node-fetch'
+const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"] }) // create new client
+
+// Variables
 const currentDate = new Date()
-const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"] })
+
 //Array of negative words to be encouraged
 const sad = ["sad", "depressed", "unhappy", "angry", "miserable", "anxious", "nervous", "broken", "bad", "cry", "tired"]
-
 
 //Array of swear words to be censored
 const swear = ["arse", "ass", "asshole", "bastard", "bitch", "bollocks", "brotherfucker", "bugger", "bullshit", "child-fucker", "cocksucker", "crap", "cunt", "damn", "effing", "fatherfucker", "frigger", "fuck", "goddam", "godsdamn", "hell", "holy shit", "horseshit", "Jesus fuck", "Jesus Christ", "motherfucker", "nigga", "nigger", "prick", "shit", "shit ass", "sisterfucker", "slut", "son of a bitch", "son of a whore", "twat"]
 
-
+// Array of encouragements
 const encouragements = ["Cheer up!:slight_smile:", "Hang in there:slight_smile:", "Come on! You can do it!:slight_smile:", "Keep fighting!:slight_smile:", "Don't give up:slight_smile:", "That's rough buddy:slight_smile:"]
-
-
-
 
 client.on("guildCreate", guild => {
   guild.owner.send("Hello. Welcome!")
 });
 
 client.on("ready", () => {
-
-
   console.log(`Logged in as ${client.user.tag}!`)
 });
 
 // gives a sweer good morening text @ 8am
 
+// Crontab tasks for spam + morning/evening messages
 const cron = require('node-cron');
 
 var morining = cron.schedule(" 0 8 * * *", () => {
@@ -65,6 +67,7 @@ var task = cron.schedule("* * * * * *", () => {
 });
 
 
+// Create an audio player for tts
 const player = createAudioPlayer(); // create audio player for new options
 addSpeechEvent(client); // set up speech recognition
 
@@ -76,6 +79,7 @@ var sounds = ['\\Onii_Chan_-_Sound_Effect.mp3',
   '\\Fortnite_Shield_Potion_Fortnite_Battle_Royale_-_Gaming_Sound_Effect_HD_-_Sound_Effects.mp3',
   '\\Roblox_Death_Sound_-_Sound_Effect_HD.mp3']
 
+// Arrays of jokes
 var jokes = ["I'm afraid for the calendar. Its days are numbered.",
   "I only know 25 letters of the alphabet. I don't know y.",
   "What did the ocean say to the beach? Nothing, it just waved.",
@@ -84,30 +88,10 @@ var jokes = ["I'm afraid for the calendar. Its days are numbered.",
   "Why don't eggs tell jokes? They'd crack each other up.",
   "I don't trust stairs. They're always up to something."
 ]
-// variable for voice id of bot
+
+// Variables for voice and channel ids of bot
 var voiceId = undefined;
 var chanId = undefined
-//emojis
-client.on("message", msg => {
-
-
-  if (msg.content.includes("test")) {
-    msg.reply("ya :slight_smile:");
-  }
-
-  if (msg.content.includes("daddy")) {
-    msg.reply("bruh");
-  }
-
-  //swear words censored
-
-  if (swear.some(word => msg.content.includes(word))) {
-
-    msg.delete();
-    msg.channel.send("##CENSORED##");
-  }
-
-})
 
 //words of encouragement function
 function getQuote() {
@@ -120,22 +104,37 @@ function getQuote() {
     })
 }
 
-client.on("message", async msg => {
-  
+// Message commands
+client.on("messageCreate", async msg => {
   if (msg.author.bot) return
 
+  if (msg.content.includes("test")) {
+    msg.reply("ya :slight_smile:");
+  }
+
+  if (msg.content.includes("daddy")) {
+    msg.reply("bruh");
+  }
+
+  //swear words censored
+  if (swear.some(word => msg.content.includes(word))) {
+    msg.delete();
+    msg.channel.send("##CENSORED##");
+  }
+
+  // inspirational quote
   if (msg.content === "$inspire") {
     getQuote().then(quote => msg.channel.send(quote))
   }
 
+  // check if sad phrase added and respond
   if (sad.some(word => msg.content.includes(word))) {
     const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)]
     msg.reply(encouragement)
   }
 
+  // React command
   if (msg.content.startsWith('!react')) {
-    
-
     msg.channel.send('How You Feeling?').then((question) => {
       question.react('😀');
       question.react('😎');
@@ -145,6 +144,8 @@ client.on("message", async msg => {
       question.react('😈');
     });
   }
+
+  // Spam messages
   // start spam
   if (msg.content == "!spam") {
 
@@ -156,10 +157,122 @@ client.on("message", async msg => {
     task.stop();
   }
 
+  // Meme commands
+  //sends a request to the meme reddit server to output a random meme on the discord server
+  if (msg.content === "!meme") {
+    const embedMeme = new Discord.MessageEmbed()
+    got('https://www.reddit.com/r/memes/random/.json').then(response => {
+      console.log(JSON.parse(response.body))
+      let content = JSON.parse(response.body);
+      let permalink = content[0].data.children[0].data.permalink;
+      let memeUrl = `https://reddit.com${permalink}`;
+      let memeImage = content[0].data.children[0].data.url;
+      let memeTitle = content[0].data.children[0].data.title;
+      let memeUpvotes = content[0].data.children[0].data.ups;
 
+      //styles and sends the display of the meme on the chat (works only for pictures and gifs) and shows the upvotes on the post
+
+      embedMeme.setTitle(`${memeTitle}`)
+      embedMeme.setURL(`${memeUrl}`)
+      embedMeme.setImage(memeImage)
+      embedMeme.setColor('RED')
+      embedMeme.setFooter(`UPVOTES ⬆️: ${memeUpvotes}`)
+
+      msg.channel.send({ embeds: [embedMeme] })
+    })
+  }
+
+  //sends a request to the wholesomememes reddit server to output a random wholesome meme on the discord server
+  if (msg.content === "!wholesome") {
+    const embedMeme = new Discord.MessageEmbed()
+    got('https://www.reddit.com/r/wholesomememes/random/.json').then(response => {
+      console.log(JSON.parse(response.body))
+      let content = JSON.parse(response.body);
+      let permalink = content[0].data.children[0].data.permalink;
+      let memeUrl = `https://reddit.com${permalink}`;
+      let memeImage = content[0].data.children[0].data.url;
+      let memeTitle = content[0].data.children[0].data.title;
+      let memeUpvotes = content[0].data.children[0].data.ups;
+
+      embedMeme.setTitle(`${memeTitle}`)
+      embedMeme.setURL(`${memeUrl}`)
+      embedMeme.setImage(memeImage)
+      embedMeme.setColor('RED')
+      embedMeme.setFooter(`UPVOTES ⬆️: ${memeUpvotes}`)
+
+      msg.channel.send({ embeds: [embedMeme] })
+    })
+  }
+
+  //sends a request to the me_irl reddit server to output a random me_irl meme on the discord server
+  if (msg.content === "!me_irl") {
+    const embedMeme = new Discord.MessageEmbed()
+    got('https://www.reddit.com/r/me_irl/random/.json').then(response => {
+      console.log(JSON.parse(response.body))
+      let content = JSON.parse(response.body);
+      let permalink = content[0].data.children[0].data.permalink;
+      let memeUrl = `https://reddit.com${permalink}`;
+      let memeImage = content[0].data.children[0].data.url;
+      let memeTitle = content[0].data.children[0].data.title;
+      let memeUpvotes = content[0].data.children[0].data.ups;
+
+      embedMeme.setTitle(`${memeTitle}`)
+      embedMeme.setURL(`${memeUrl}`)
+      embedMeme.setImage(memeImage)
+      embedMeme.setColor('RED')
+      embedMeme.setFooter(`UPVOTES ⬆️: ${memeUpvotes}`)
+
+      msg.channel.send({ embeds: [embedMeme] })
+    })
+  }
+
+  //sends a request to the gifs reddit server to output a random gif on the discord server
+  if (msg.content === "!gifs") {
+    const embedMeme = new Discord.MessageEmbed()
+    got('https://www.reddit.com/r/gifs/random/.json').then(response => {
+      console.log(JSON.parse(response.body))
+      let content = JSON.parse(response.body);
+      let permalink = content[0].data.children[0].data.permalink;
+      let memeUrl = `https://reddit.com${permalink}`;
+      let memeImage = content[0].data.children[0].data.url;
+      let memeTitle = content[0].data.children[0].data.title;
+      let memeUpvotes = content[0].data.children[0].data.ups;
+
+      embedMeme.setTitle(`${memeTitle}`)
+      embedMeme.setURL(`${memeUrl}`)
+      embedMeme.setImage(memeImage)
+      embedMeme.setColor('RED')
+      embedMeme.setFooter(`UPVOTES ⬆️: ${memeUpvotes}`)
+
+      msg.channel.send({ embeds: [embedMeme] })
+    })
+  }
+
+  //sends a request to the itookapicture reddit server to output a random cool picture on the discord server
+  if (msg.content === "!coolpics") {
+    const embedMeme = new Discord.MessageEmbed()
+    got('https://www.reddit.com/r/itookapicture/random/.json').then(response => {
+      console.log(JSON.parse(response.body))
+      let content = JSON.parse(response.body);
+      let permalink = content[0].data.children[0].data.permalink;
+      let memeUrl = `https://reddit.com${permalink}`;
+      let memeImage = content[0].data.children[0].data.url;
+      let memeTitle = content[0].data.children[0].data.title;
+      let memeUpvotes = content[0].data.children[0].data.ups;
+
+      embedMeme.setTitle(`${memeTitle}`)
+      embedMeme.setURL(`${memeUrl}`)
+      embedMeme.setImage(memeImage)
+      embedMeme.setColor('RED')
+      embedMeme.setFooter(`UPVOTES ⬆️: ${memeUpvotes}`)
+
+      msg.channel.send({ embeds: [embedMeme] })
+    })
+  }
+
+  // Summon bot into voice channel
   // Summon allows bot to join voice channel and play a greeting
   if (msg.content === "!summon") {
-    console.log("passed here")
     voiceId = msg.guild.id // assigns voice channel ids for later use
     chanId = msg.member.voice.channel.id
     // join voice channel
@@ -169,26 +282,22 @@ client.on("message", async msg => {
       adapterCreator: msg.guild.voiceAdapterCreator,
       selfDeaf: false
     }).subscribe(player)
-    console.log("passed here123")
 
     let newGreeting = createAudioResource(__dirname + '\\audio_files' + '\\ohayo_noahahahaha.mp3');
     player.play(newGreeting)
-
-    console.log(__dirname)
-
-    console.log("passed here")
   }
 
+  // Hi response
   if (msg.content === "!hi") {
     msg.reply("How are you?");
   }
+
   // Tells current date
   if (msg.content === "!date") {
     msg.reply(currentDate.toLocaleString());
 
   }
 })
-
 
 // Speech commands
 client.on("speech", (msg) => {
@@ -223,7 +332,5 @@ client.on("speech", (msg) => {
   // }
 });
 
-
-
-
+// Logs client in (turn bot on)
 client.login("OTM0MjkyODI0MzMyMDc1MDg4.Yet9_w.-tIhTkimADEwQLS6JIbLKyELnak");
