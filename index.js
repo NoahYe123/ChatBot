@@ -49,7 +49,7 @@ var morining = cron.schedule(" 0 8 * * *", () => {
   timezone: "EST"
 });
 // Gives you a sweet goodnight text @ 8 am
-var morining = cron.schedule(" * * * * * *", () => {
+var morining = cron.schedule(" 0 17 * * *", () => {
   let channel = client.channels.cache.get("934293745187315715");
   channel.send("Go to sleep! It's Getting Late!");
 }, {
@@ -62,7 +62,7 @@ var task = cron.schedule("* * * * * *", () => {
   let channel = client.channels.cache.get("934293745187315715");
   channel.send("spam");
 }, {
-  scheduled: true,
+  scheduled: false,
   timezone: "EST"
 });
 
