@@ -1,4 +1,4 @@
-// Import statements
+// Import method statements
 import { createRequire } from "module";
 import path from 'path';
 import { fileURLToPath } from 'url';
