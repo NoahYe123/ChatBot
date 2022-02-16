@@ -6,8 +6,6 @@ const discordTTS = require("discord-tts") // discord text to speech
 const currentDate = new Date()
 
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"] }) // create a new discord server/bot client
-//adding comement
-//danny comments
 
 // Print message when bot is ready
 client.on("ready", () => {
